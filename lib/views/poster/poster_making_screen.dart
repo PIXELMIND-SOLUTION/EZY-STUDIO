@@ -3296,7 +3296,7 @@ class _ApiPosterEditorState extends State<SamplePosterScreen> {
           TextButton(
             onPressed: _pickLogoImage,
             child: const Text(
-              "Logo",
+              "AddLogo",
               style: TextStyle(color: Colors.black),
             ),
           ),

@@ -441,49 +441,12 @@ class _ProfessionalLogoCard extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 12),
-                          // Row(
-                          //   children: [
-                          //     Expanded(
-                          //       child: OutlinedButton.icon(
-                          //         onPressed: () {
-                          //           // implement share
-                          //         },
-                          //         icon: const Icon(Icons.share),
-                          //         label: const Text('Share'),
-                          //         style: OutlinedButton.styleFrom(
-                          //           padding: const EdgeInsets.symmetric(vertical: 14),
-                          //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     const SizedBox(width: 12),
-                          //     Expanded(
-                          //       child: OutlinedButton.icon(
-                          //         onPressed: () {
-                          //           // set as favorite or add to project
-                          //         },
-                          //         icon: const Icon(Icons.check),
-                          //         label: const Text('Use'),
-                          //         style: OutlinedButton.styleFrom(
-                          //           padding: const EdgeInsets.symmetric(vertical: 14),
-                          //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                          
                           const SizedBox(height: 16),
-                          // optional additional info or tags
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text('Tags', style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.w600)),
-                          // ),
+                    
                           const SizedBox(height: 8),
                           // Wrap(
-                          //   spacing: 8,
-                          //   runSpacing: 8,
-                          //   children: (logo.tags ?? ['Modern', 'Minimal']).map((t) => Chip(label: Text(t))).toList(),
-                          // ),
+                
                         ],
                       ),
                     ),

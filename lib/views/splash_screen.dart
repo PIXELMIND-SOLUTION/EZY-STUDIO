@@ -104,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen>
     } else if (isLoggedIn && !isVerified) {
       // User is logged in but not verified - go to OTP screen
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const OtpScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     } else {
       // User is not logged in - go to registration screen

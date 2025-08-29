@@ -185,7 +185,7 @@ class _PosterMakerAppScreenState extends State<PosterMakerAppScreen>
           width: 80,
           height: 80,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
             image: DecorationImage(
               image: FileImage(imageFile),
               fit: BoxFit.cover,

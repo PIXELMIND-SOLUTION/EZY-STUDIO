@@ -214,49 +214,49 @@ class _PosterScreenState extends State<PosterScreen> with TickerProviderStateMix
               fontWeight: FontWeight.w400,
             ),
           ),
-          const SizedBox(height: 20),
-          _buildTabSelector(),
+          // const SizedBox(height: 20),
+          // _buildTabSelector(),
         ],
       ),
     );
   }
 
-  Widget _buildTabSelector() {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const AppText(
-              'create_poster',
-              style: TextStyle(
-                color: Color(0xFF6B46C1),
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildTabSelector() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(4),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white.withOpacity(0.2),
+  //       borderRadius: BorderRadius.circular(16),
+  //     ),
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Container(
+  //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(12),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.black.withOpacity(0.1),
+  //                 blurRadius: 4,
+  //                 offset: const Offset(0, 2),
+  //               ),
+  //             ],
+  //           ),
+  //           child: const AppText(
+  //             '',
+  //             style: TextStyle(
+  //               color: Color(0xFF6B46C1),
+  //               fontWeight: FontWeight.w600,
+  //               fontSize: 14,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildContent(BuildContext context) {
     return SingleChildScrollView(

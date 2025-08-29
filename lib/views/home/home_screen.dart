@@ -475,7 +475,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Row(
             children: [
               _buildHeaderActionButton(
-                icon: Icons.smart_toy_outlined,
+                icon: Icons.memory,
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>AiScreen()));
 
@@ -484,7 +484,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               const SizedBox(width: 12),
               _buildHeaderActionButton(
-                icon: Icons.card_giftcard_outlined,
+                icon: Icons.attach_money,
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>ReferEarnScreen()));
                 }
@@ -1348,7 +1348,498 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
   }
-  void showReferAndEarnModal(BuildContext context) {
+//   void showReferAndEarnModal(BuildContext context) {
+//   String? userId;
+//   String? userReferralCode;
+//   bool isLoading = true;
+//   String? errorMessage;
+
+//   showGeneralDialog(
+//     context: context,
+//     barrierDismissible: true,
+//     barrierLabel: 'Refer and Earn Modal',
+//     barrierColor: Colors.black.withOpacity(0.7),
+//     transitionDuration: const Duration(milliseconds: 500),
+//     pageBuilder: (context, animation, secondaryAnimation) {
+//       return const SizedBox.shrink();
+//     },
+//     transitionBuilder: (context, animation, secondaryAnimation, child) {
+//       final curvedAnimation = CurvedAnimation(
+//         parent: animation,
+//         curve: Curves.easeOutBack,
+//       );
+
+//       return BackdropFilter(
+//         filter: ImageFilter.blur(
+//           sigmaX: 5 * animation.value,
+//           sigmaY: 5 * animation.value,
+//         ),
+//         child: SlideTransition(
+//           position: Tween<Offset>(
+//             begin: const Offset(0, 0.3),
+//             end: Offset.zero,
+//           ).animate(curvedAnimation),
+//           child: ScaleTransition(
+//             scale: Tween<double>(
+//               begin: 0.7,
+//               end: 1.0,
+//             ).animate(curvedAnimation),
+//             child: FadeTransition(
+//               opacity: animation,
+//               child: Center(
+//                 child: Material(
+//                   color: Colors.transparent,
+//                   child: StatefulBuilder(
+//                     builder: (context, setState) {
+//                       // Initialize data loading
+//                       Future<void> loadUserDataAndFetchReferralCode() async {
+//                         try {
+//                           setState(() {
+//                             isLoading = true;
+//                             errorMessage = null;
+//                           });
+
+//                           final userData = await AuthPreferences.getUserData();
+//                           if (userData != null && userData.user != null) {
+//                             userId = userData.user.id;
+
+//                             if (userId != null) {
+//                               final response = await http.get(
+//                                 Uri.parse('http://194.164.148.244:4061/api/users/refferalcode/$userId'),
+//                                 headers: {'Content-Type': 'application/json'},
+//                               );
+
+//                               if (response.statusCode == 200) {
+//                                 final data = json.decode(response.body);
+//                                 String? fetchedCode = data['referralCode'] ??
+//                                     data['refferalCode'] ??
+//                                     data['code'] ??
+//                                     data['referral_code'] ??
+//                                     data['refferal_code'];
+
+//                                 setState(() {
+//                                   isLoading = false;
+//                                   userReferralCode = fetchedCode;
+//                                   errorMessage = fetchedCode == null ? 'No referral code found' : null;
+//                                 });
+//                               } else {
+//                                 setState(() {
+//                                   userReferralCode = null;
+//                                   errorMessage = 'Failed to load referral code';
+//                                   isLoading = false;
+//                                 });
+//                               }
+//                             } else {
+//                               setState(() {
+//                                 userReferralCode = null;
+//                                 errorMessage = 'User ID is null';
+//                                 isLoading = false;
+//                               });
+//                             }
+//                           } else {
+//                             setState(() {
+//                               userReferralCode = null;
+//                               errorMessage = 'User data not found';
+//                               isLoading = false;
+//                             });
+//                           }
+//                         } catch (e) {
+//                           setState(() {
+//                             userReferralCode = null;
+//                             errorMessage = 'Network error: ${e.toString()}';
+//                             isLoading = false;
+//                           });
+//                         }
+//                       }
+
+//                       // Initialize loading
+//                       WidgetsBinding.instance.addPostFrameCallback((_) {
+//                         if (isLoading && userReferralCode == null && errorMessage == null) {
+//                           loadUserDataAndFetchReferralCode();
+//                         }
+//                       });
+
+//                       return Container(
+//                         margin: const EdgeInsets.symmetric(horizontal: 20),
+//                         constraints: BoxConstraints(
+//                           maxHeight: MediaQuery.of(context).size.height * 0.85,
+//                           maxWidth: 420,
+//                         ),
+//                         decoration: BoxDecoration(
+//                           color: Colors.white,
+//                           borderRadius: BorderRadius.circular(20),
+//                           boxShadow: [
+//                             BoxShadow(
+//                               color: Colors.black.withOpacity(0.18),
+//                               blurRadius: 20,
+//                               offset: const Offset(0, 10),
+//                             ),
+//                           ],
+//                         ),
+//                         child: ClipRRect(
+//                           borderRadius: BorderRadius.circular(20),
+//                           child: SingleChildScrollView(
+//                             child: Column(
+//                               mainAxisSize: MainAxisSize.min,
+//                               children: [
+//                                 // Header with animated gift icon
+//                                 Container(
+//                                   decoration: const BoxDecoration(
+//                                     gradient: LinearGradient(
+//                                       begin: Alignment.topLeft,
+//                                       end: Alignment.bottomRight,
+//                                       colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+//                                     ),
+//                                   ),
+//                                   child: Padding(
+//                                     padding: const EdgeInsets.fromLTRB(20, 18, 16, 18),
+//                                     child: Row(
+//                                       children: [
+//                                         // Subtle floating animation using TweenAnimationBuilder
+//                                         TweenAnimationBuilder<double>(
+//                                           tween: Tween(begin: 0.0, end: 1.0),
+//                                           duration: const Duration(seconds: 2),
+//                                           curve: Curves.easeInOut,
+//                                           builder: (context, value, child) {
+//                                             final translateY = (0.6 - (value - 0.5).abs()) * -6; // small up-down
+//                                             final scale = 0.96 + (value * 0.04);
+//                                             return Transform.translate(
+//                                               offset: Offset(0, translateY),
+//                                               child: Transform.scale(scale: scale, child: child),
+//                                             );
+//                                           },
+//                                           child: Container(
+//                                             padding: const EdgeInsets.all(12),
+//                                             decoration: BoxDecoration(
+//                                               color: Colors.white.withOpacity(0.18),
+//                                               borderRadius: BorderRadius.circular(12),
+//                                             ),
+//                                             child: const Icon(
+//                                               Icons.card_giftcard,
+//                                               color: Colors.white,
+//                                               size: 26,
+//                                             ),
+//                                           ),
+//                                         ),
+//                                         const SizedBox(width: 14),
+//                                         Expanded(
+//                                           child: Column(
+//                                             crossAxisAlignment: CrossAxisAlignment.start,
+//                                             children: const [
+//                                               Text(
+//                                                 'Refer & Earn',
+//                                                 style: TextStyle(
+//                                                   fontSize: 20,
+//                                                   fontWeight: FontWeight.w700,
+//                                                   color: Colors.white,
+//                                                 ),
+//                                               ),
+//                                               SizedBox(height: 2),
+//                                               Text(
+//                                                 'Share your code — both earn rewards',
+//                                                 style: TextStyle(
+//                                                   fontSize: 13,
+//                                                   color: Colors.white70,
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                         ),
+//                                         Material(
+//                                           color: Colors.transparent,
+//                                           child: InkWell(
+//                                             borderRadius: BorderRadius.circular(20),
+//                                             onTap: () => Navigator.pop(context),
+//                                             child: Container(
+//                                               padding: const EdgeInsets.all(8),
+//                                               decoration: BoxDecoration(
+//                                                 color: Colors.white.withOpacity(0.12),
+//                                                 shape: BoxShape.circle,
+//                                               ),
+//                                               child: const Icon(
+//                                                 Icons.close,
+//                                                 color: Colors.white,
+//                                                 size: 20,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                         ),
+//                                       ],
+//                                     ),
+//                                   ),
+//                                 ),
+
+//                                 Padding(
+//                                   padding: const EdgeInsets.all(22),
+//                                   child: Column(
+//                                     crossAxisAlignment: CrossAxisAlignment.start,
+//                                     children: [
+//                                       // Earnings highlight
+//                                       Container(
+//                                         width: double.infinity,
+//                                         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+//                                         decoration: BoxDecoration(
+//                                           gradient: const LinearGradient(
+//                                             begin: Alignment.topLeft,
+//                                             end: Alignment.bottomRight,
+//                                             colors: [Color(0xFFFEF3C7), Color(0xFFFDE68A)],
+//                                           ),
+//                                           borderRadius: BorderRadius.circular(14),
+//                                           border: Border.all(
+//                                             color: const Color(0xFFF59E0B).withOpacity(0.25),
+//                                           ),
+//                                         ),
+//                                         child: Row(
+//                                           children: const [
+//                                             Icon(Icons.monetization_on, color: Color(0xFFF59E0B), size: 30),
+//                                             SizedBox(width: 12),
+//                                             Expanded(
+//                                               child: Text(
+//                                                 'Earn ₹200 when a friend upgrades — you both win!',
+//                                                 style: TextStyle(
+//                                                   fontSize: 15,
+//                                                   fontWeight: FontWeight.w700,
+//                                                   color: Color(0xFF92400E),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                           ],
+//                                         ),
+//                                       ),
+
+//                                       const SizedBox(height: 22),
+
+//                                       // Your referral code label
+//                                       const Text(
+//                                         'Your Referral Code',
+//                                         style: TextStyle(
+//                                           fontSize: 16,
+//                                           fontWeight: FontWeight.bold,
+//                                           color: Color(0xFF111827),
+//                                         ),
+//                                       ),
+//                                       const SizedBox(height: 12),
+
+//                                       // AnimatedSwitcher for seamless state transitions (loading / error / code)
+//                                       AnimatedSwitcher(
+//                                         duration: const Duration(milliseconds: 350),
+//                                         switchInCurve: Curves.easeOut,
+//                                         switchOutCurve: Curves.easeIn,
+//                                         child: isLoading
+//                                             ? Container(
+//                                                 key: const ValueKey('loading'),
+//                                                 padding: const EdgeInsets.all(16),
+//                                                 decoration: BoxDecoration(
+//                                                   color: const Color(0xFFF9FAFB),
+//                                                   borderRadius: BorderRadius.circular(12),
+//                                                   border: Border.all(color: const Color(0xFFE5E7EB)),
+//                                                 ),
+//                                                 child: Row(
+//                                                   mainAxisAlignment: MainAxisAlignment.center,
+//                                                   children: const [
+//                                                     SizedBox(
+//                                                       width: 20,
+//                                                       height: 20,
+//                                                       child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF6366F1)),
+//                                                     ),
+//                                                     SizedBox(width: 12),
+//                                                     Text(
+//                                                       'Loading your referral code...',
+//                                                       style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
+//                                                     ),
+//                                                   ],
+//                                                 ),
+//                                               )
+//                                             : (errorMessage != null)
+//                                                 ? Container(
+//                                                     key: const ValueKey('error'),
+//                                                     padding: const EdgeInsets.all(14),
+//                                                     decoration: BoxDecoration(
+//                                                       color: const Color(0xFFFEF2F2),
+//                                                       borderRadius: BorderRadius.circular(12),
+//                                                       border: Border.all(color: const Color(0xFFFECACA)),
+//                                                     ),
+//                                                     child: Column(
+//                                                       crossAxisAlignment: CrossAxisAlignment.stretch,
+//                                                       children: [
+//                                                         Row(
+//                                                           children: [
+//                                                             const Icon(Icons.error_outline, color: Color(0xFFEF4444), size: 20),
+//                                                             const SizedBox(width: 8),
+//                                                             Expanded(
+//                                                               child: Text(
+//                                                                 errorMessage!,
+//                                                                 style: const TextStyle(fontSize: 14, color: Color(0xFFDC2626)),
+//                                                               ),
+//                                                             ),
+//                                                           ],
+//                                                         ),
+//                                                         const SizedBox(height: 12),
+//                                                         SizedBox(
+//                                                           width: double.infinity,
+//                                                           child: ElevatedButton.icon(
+//                                                             onPressed: loadUserDataAndFetchReferralCode,
+//                                                             style: ElevatedButton.styleFrom(
+//                                                               backgroundColor: const Color(0xFFEF4444),
+//                                                               foregroundColor: Colors.white,
+//                                                               padding: const EdgeInsets.symmetric(vertical: 10),
+//                                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+//                                                             ),
+//                                                             icon: const Icon(Icons.refresh, size: 16),
+//                                                             label: const Text('Retry', style: TextStyle(fontSize: 14)),
+//                                                           ),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   )
+//                                                 : Container(
+//                                                     key: const ValueKey('code'),
+//                                                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+//                                                     decoration: BoxDecoration(
+//                                                       color: const Color(0xFFF9FAFB),
+//                                                       borderRadius: BorderRadius.circular(12),
+//                                                       border: Border.all(color: const Color(0xFFE5E7EB)),
+//                                                     ),
+//                                                     child: Row(
+//                                                       children: [
+//                                                         Expanded(
+//                                                           child: Text(
+//                                                             userReferralCode ?? '--',
+//                                                             style: const TextStyle(
+//                                                               fontSize: 18,
+//                                                               fontWeight: FontWeight.bold,
+//                                                               letterSpacing: 2,
+//                                                               color: Color(0xFF4F46E5),
+//                                                             ),
+//                                                           ),
+//                                                         ),
+//                                                         Material(
+//                                                           color: Colors.transparent,
+//                                                           child: InkWell(
+//                                                             borderRadius: BorderRadius.circular(8),
+//                                                             onTap: () {
+//                                                               if (userReferralCode != null && userReferralCode!.isNotEmpty) {
+//                                                                 Clipboard.setData(ClipboardData(text: userReferralCode!));
+//                                                                 ScaffoldMessenger.of(context).showSnackBar(
+//                                                                   const SnackBar(
+//                                                                     content: Text('Referral code copied!'),
+//                                                                     backgroundColor: Color(0xFF10B981),
+//                                                                   ),
+//                                                                 );
+//                                                               }
+//                                                             },
+//                                                             child: Container(
+//                                                               padding: const EdgeInsets.all(8),
+//                                                               decoration: BoxDecoration(
+//                                                                 color: const Color(0xFF4F46E5),
+//                                                                 borderRadius: BorderRadius.circular(8),
+//                                                               ),
+//                                                               child: const Icon(Icons.copy, color: Colors.white, size: 18),
+//                                                             ),
+//                                                           ),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                       ),
+
+//                                       const SizedBox(height: 22),
+
+//                                       // How it works
+//                                       Container(
+//                                         padding: const EdgeInsets.all(14),
+//                                         decoration: BoxDecoration(
+//                                           color: const Color(0xFFF9FAFB),
+//                                           borderRadius: BorderRadius.circular(12),
+//                                           border: Border.all(color: const Color(0xFFE5E7EB)),
+//                                         ),
+//                                         child: Column(
+//                                           crossAxisAlignment: CrossAxisAlignment.start,
+//                                           children: [
+//                                             const Text(
+//                                               'How it works',
+//                                               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xFF111827)),
+//                                             ),
+//                                             const SizedBox(height: 10),
+//                                             _buildHowItWorksStep('1', 'Share your code', 'Send your referral code to friends'),
+//                                             const SizedBox(height: 8),
+//                                             _buildHowItWorksStep('2', 'Friend signs up', 'They use your code during registration'),
+//                                             const SizedBox(height: 8),
+//                                             // _buildHowItWorksStep('3', 'Both earn rewards', 'You get ₹200 when they upgrade'),
+//                                           ],
+//                                         ),
+//                                       ),
+
+//                                       const SizedBox(height: 16),
+
+//                                       // Primary CTA
+//                                       // Row(
+//                                       //   children: [
+//                                       //     Expanded(
+//                                       //       child: ElevatedButton.icon(
+//                                       //         onPressed: () {
+//                                       //           if (userReferralCode != null && userReferralCode!.isNotEmpty) {
+//                                       //             // share intent or copy
+//                                       //             Clipboard.setData(ClipboardData(text: userReferralCode!));
+//                                       //             ScaffoldMessenger.of(context).showSnackBar(
+//                                       //               const SnackBar(content: Text('Referral code copied — share it with friends!')),
+//                                       //             );
+//                                       //           } else {
+//                                       //             // if no code yet, try reload
+//                                       //             loadUserDataAndFetchReferralCode();
+//                                       //           }
+//                                       //         },
+//                                       //         icon: const Icon(Icons.share_outlined,color: Colors.white,),
+//                                       //         label:  Text('Share Code',style: TextStyle(color: Colors.white),),
+//                                       //         style: ElevatedButton.styleFrom(
+//                                       //           backgroundColor: const Color(0xFF4F46E5),
+//                                       //           padding: const EdgeInsets.symmetric(vertical: 12),
+//                                       //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//                                       //         ),
+//                                       //       ),
+//                                       //     ),
+//                                       //     const SizedBox(width: 12),
+//                                       //     // SizedBox(
+//                                       //     //   width: 48,
+//                                       //     //   height: 48,
+//                                       //     //   child: OutlinedButton(
+//                                       //     //     onPressed: () {
+//                                       //     //       // quick retry
+//                                       //     //       loadUserDataAndFetchReferralCode();
+//                                       //     //     },
+//                                       //     //     style: OutlinedButton.styleFrom(
+//                                       //     //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//                                       //     //       side: BorderSide(color: Colors.grey.shade300),
+//                                       //     //     ),
+//                                       //     //     child: const Icon(Icons.refresh, size: 20),
+//                                       //     //   ),
+//                                       //     // )
+//                                       //   ],
+//                                       // ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                         ),
+//                       );
+//                     },
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         )
+//       );
+//       },
+//     );
+
+// }
+
+
+
+void showReferAndEarnModal(BuildContext context) {
   String? userId;
   String? userReferralCode;
   bool isLoading = true;
@@ -1358,483 +1849,443 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     context: context,
     barrierDismissible: true,
     barrierLabel: 'Refer and Earn Modal',
-    barrierColor: Colors.black.withOpacity(0.7),
-    transitionDuration: const Duration(milliseconds: 500),
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: const Duration(milliseconds: 300),
     pageBuilder: (context, animation, secondaryAnimation) {
       return const SizedBox.shrink();
     },
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      final curvedAnimation = CurvedAnimation(
-        parent: animation,
-        curve: Curves.easeOutBack,
-      );
+      return FadeTransition(
+        opacity: animation,
+        child: ScaleTransition(
+          scale: Tween<double>(
+            begin: 0.9,
+            end: 1.0,
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutCubic,
+          )),
+          child: Center(
+            child: Material(
+              color: Colors.transparent,
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  // Initialize data loading
+                  Future<void> loadUserDataAndFetchReferralCode() async {
+                    try {
+                      setState(() {
+                        isLoading = true;
+                        errorMessage = null;
+                      });
 
-      return BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: 5 * animation.value,
-          sigmaY: 5 * animation.value,
-        ),
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0, 0.3),
-            end: Offset.zero,
-          ).animate(curvedAnimation),
-          child: ScaleTransition(
-            scale: Tween<double>(
-              begin: 0.7,
-              end: 1.0,
-            ).animate(curvedAnimation),
-            child: FadeTransition(
-              opacity: animation,
-              child: Center(
-                child: Material(
-                  color: Colors.transparent,
-                  child: StatefulBuilder(
-                    builder: (context, setState) {
-                      // Initialize data loading
-                      Future<void> loadUserDataAndFetchReferralCode() async {
-                        try {
-                          setState(() {
-                            isLoading = true;
-                            errorMessage = null;
-                          });
+                      final userData = await AuthPreferences.getUserData();
+                      if (userData != null && userData.user != null) {
+                        userId = userData.user.id;
 
-                          final userData = await AuthPreferences.getUserData();
-                          if (userData != null && userData.user != null) {
-                            userId = userData.user.id;
+                        if (userId != null) {
+                          final response = await http.get(
+                            Uri.parse('http://194.164.148.244:4061/api/users/refferalcode/$userId'),
+                            headers: {'Content-Type': 'application/json'},
+                          );
 
-                            if (userId != null) {
-                              final response = await http.get(
-                                Uri.parse('http://194.164.148.244:4061/api/users/refferalcode/$userId'),
-                                headers: {'Content-Type': 'application/json'},
-                              );
+                          if (response.statusCode == 200) {
+                            final data = json.decode(response.body);
+                            String? fetchedCode = data['referralCode'] ??
+                                data['refferalCode'] ??
+                                data['code'] ??
+                                data['referral_code'] ??
+                                data['refferal_code'];
 
-                              if (response.statusCode == 200) {
-                                final data = json.decode(response.body);
-                                String? fetchedCode = data['referralCode'] ??
-                                    data['refferalCode'] ??
-                                    data['code'] ??
-                                    data['referral_code'] ??
-                                    data['refferal_code'];
-
-                                setState(() {
-                                  isLoading = false;
-                                  userReferralCode = fetchedCode;
-                                  errorMessage = fetchedCode == null ? 'No referral code found' : null;
-                                });
-                              } else {
-                                setState(() {
-                                  userReferralCode = null;
-                                  errorMessage = 'Failed to load referral code';
-                                  isLoading = false;
-                                });
-                              }
-                            } else {
-                              setState(() {
-                                userReferralCode = null;
-                                errorMessage = 'User ID is null';
-                                isLoading = false;
-                              });
-                            }
+                            setState(() {
+                              isLoading = false;
+                              userReferralCode = fetchedCode;
+                              errorMessage = fetchedCode == null ? 'No referral code found' : null;
+                            });
                           } else {
                             setState(() {
                               userReferralCode = null;
-                              errorMessage = 'User data not found';
+                              errorMessage = 'Failed to load referral code';
                               isLoading = false;
                             });
                           }
-                        } catch (e) {
+                        } else {
                           setState(() {
                             userReferralCode = null;
-                            errorMessage = 'Network error: ${e.toString()}';
+                            errorMessage = 'User ID is null';
                             isLoading = false;
                           });
                         }
+                      } else {
+                        setState(() {
+                          userReferralCode = null;
+                          errorMessage = 'User data not found';
+                          isLoading = false;
+                        });
                       }
-
-                      // Initialize loading
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (isLoading && userReferralCode == null && errorMessage == null) {
-                          loadUserDataAndFetchReferralCode();
-                        }
+                    } catch (e) {
+                      setState(() {
+                        userReferralCode = null;
+                        errorMessage = 'Network error: ${e.toString()}';
+                        isLoading = false;
                       });
+                    }
+                  }
 
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.85,
-                          maxWidth: 420,
+                  // Initialize loading
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (isLoading && userReferralCode == null && errorMessage == null) {
+                      loadUserDataAndFetchReferralCode();
+                    }
+                  });
+
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.8,
+                      maxWidth: 400,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
                         ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.18),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Clean Header
+                          Container(
+                            padding: const EdgeInsets.fromLTRB(24, 20, 20, 20),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFF8FAFC),
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Color(0xFFE2E8F0),
+                                  width: 1,
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
+                            child: Row(
                               children: [
-                                // Header with animated gift icon
                                 Container(
-                                  decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
-                                    ),
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF3B82F6).withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(20, 18, 16, 18),
-                                    child: Row(
-                                      children: [
-                                        // Subtle floating animation using TweenAnimationBuilder
-                                        TweenAnimationBuilder<double>(
-                                          tween: Tween(begin: 0.0, end: 1.0),
-                                          duration: const Duration(seconds: 2),
-                                          curve: Curves.easeInOut,
-                                          builder: (context, value, child) {
-                                            final translateY = (0.6 - (value - 0.5).abs()) * -6; // small up-down
-                                            final scale = 0.96 + (value * 0.04);
-                                            return Transform.translate(
-                                              offset: Offset(0, translateY),
-                                              child: Transform.scale(scale: scale, child: child),
-                                            );
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(12),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white.withOpacity(0.18),
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: const Icon(
-                                              Icons.card_giftcard,
-                                              color: Colors.white,
-                                              size: 26,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 14),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                'Refer & Earn',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              SizedBox(height: 2),
-                                              Text(
-                                                'Share your code — both earn rewards',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.white70,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            borderRadius: BorderRadius.circular(20),
-                                            onTap: () => Navigator.pop(context),
-                                            child: Container(
-                                              padding: const EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white.withOpacity(0.12),
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: const Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  child: const Icon(
+                                    Icons.people_outline,
+                                    color: Color(0xFF3B82F6),
+                                    size: 22,
                                   ),
                                 ),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(22),
+                                const SizedBox(width: 12),
+                                const Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      // Earnings highlight
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [Color(0xFFFEF3C7), Color(0xFFFDE68A)],
-                                          ),
-                                          borderRadius: BorderRadius.circular(14),
-                                          border: Border.all(
-                                            color: const Color(0xFFF59E0B).withOpacity(0.25),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: const [
-                                            Icon(Icons.monetization_on, color: Color(0xFFF59E0B), size: 30),
-                                            SizedBox(width: 12),
-                                            Expanded(
-                                              child: Text(
-                                                'Earn ₹200 when a friend upgrades — you both win!',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color(0xFF92400E),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 22),
-
-                                      // Your referral code label
-                                      const Text(
-                                        'Your Referral Code',
+                                      Text(
+                                        'Invite Friends',
                                         style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF111827),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF1E293B),
                                         ),
                                       ),
-                                      const SizedBox(height: 12),
-
-                                      // AnimatedSwitcher for seamless state transitions (loading / error / code)
-                                      AnimatedSwitcher(
-                                        duration: const Duration(milliseconds: 350),
-                                        switchInCurve: Curves.easeOut,
-                                        switchOutCurve: Curves.easeIn,
-                                        child: isLoading
-                                            ? Container(
-                                                key: const ValueKey('loading'),
-                                                padding: const EdgeInsets.all(16),
-                                                decoration: BoxDecoration(
-                                                  color: const Color(0xFFF9FAFB),
-                                                  borderRadius: BorderRadius.circular(12),
-                                                  border: Border.all(color: const Color(0xFFE5E7EB)),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const [
-                                                    SizedBox(
-                                                      width: 20,
-                                                      height: 20,
-                                                      child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF6366F1)),
-                                                    ),
-                                                    SizedBox(width: 12),
-                                                    Text(
-                                                      'Loading your referral code...',
-                                                      style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : (errorMessage != null)
-                                                ? Container(
-                                                    key: const ValueKey('error'),
-                                                    padding: const EdgeInsets.all(14),
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(0xFFFEF2F2),
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      border: Border.all(color: const Color(0xFFFECACA)),
-                                                    ),
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            const Icon(Icons.error_outline, color: Color(0xFFEF4444), size: 20),
-                                                            const SizedBox(width: 8),
-                                                            Expanded(
-                                                              child: Text(
-                                                                errorMessage!,
-                                                                style: const TextStyle(fontSize: 14, color: Color(0xFFDC2626)),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const SizedBox(height: 12),
-                                                        SizedBox(
-                                                          width: double.infinity,
-                                                          child: ElevatedButton.icon(
-                                                            onPressed: loadUserDataAndFetchReferralCode,
-                                                            style: ElevatedButton.styleFrom(
-                                                              backgroundColor: const Color(0xFFEF4444),
-                                                              foregroundColor: Colors.white,
-                                                              padding: const EdgeInsets.symmetric(vertical: 10),
-                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                                            ),
-                                                            icon: const Icon(Icons.refresh, size: 16),
-                                                            label: const Text('Retry', style: TextStyle(fontSize: 14)),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    key: const ValueKey('code'),
-                                                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(0xFFF9FAFB),
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      border: Border.all(color: const Color(0xFFE5E7EB)),
-                                                    ),
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text(
-                                                            userReferralCode ?? '--',
-                                                            style: const TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight: FontWeight.bold,
-                                                              letterSpacing: 2,
-                                                              color: Color(0xFF4F46E5),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Material(
-                                                          color: Colors.transparent,
-                                                          child: InkWell(
-                                                            borderRadius: BorderRadius.circular(8),
-                                                            onTap: () {
-                                                              if (userReferralCode != null && userReferralCode!.isNotEmpty) {
-                                                                Clipboard.setData(ClipboardData(text: userReferralCode!));
-                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                  const SnackBar(
-                                                                    content: Text('Referral code copied!'),
-                                                                    backgroundColor: Color(0xFF10B981),
-                                                                  ),
-                                                                );
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              padding: const EdgeInsets.all(8),
-                                                              decoration: BoxDecoration(
-                                                                color: const Color(0xFF4F46E5),
-                                                                borderRadius: BorderRadius.circular(8),
-                                                              ),
-                                                              child: const Icon(Icons.copy, color: Colors.white, size: 18),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                      ),
-
-                                      const SizedBox(height: 22),
-
-                                      // How it works
-                                      Container(
-                                        padding: const EdgeInsets.all(14),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFF9FAFB),
-                                          borderRadius: BorderRadius.circular(12),
-                                          border: Border.all(color: const Color(0xFFE5E7EB)),
+                                      Text(
+                                        'Share your referral code',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFF64748B),
                                         ),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              'How it works',
-                                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xFF111827)),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            _buildHowItWorksStep('1', 'Share your code', 'Send your referral code to friends'),
-                                            const SizedBox(height: 8),
-                                            _buildHowItWorksStep('2', 'Friend signs up', 'They use your code during registration'),
-                                            const SizedBox(height: 8),
-                                            // _buildHowItWorksStep('3', 'Both earn rewards', 'You get ₹200 when they upgrade'),
-                                          ],
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // Primary CTA
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton.icon(
-                                              onPressed: () {
-                                                if (userReferralCode != null && userReferralCode!.isNotEmpty) {
-                                                  // share intent or copy
-                                                  Clipboard.setData(ClipboardData(text: userReferralCode!));
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                    const SnackBar(content: Text('Referral code copied — share it with friends!')),
-                                                  );
-                                                } else {
-                                                  // if no code yet, try reload
-                                                  loadUserDataAndFetchReferralCode();
-                                                }
-                                              },
-                                              icon: const Icon(Icons.share_outlined,color: Colors.white,),
-                                              label:  Text('Share Code',style: TextStyle(color: Colors.white),),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: const Color(0xFF4F46E5),
-                                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          // SizedBox(
-                                          //   width: 48,
-                                          //   height: 48,
-                                          //   child: OutlinedButton(
-                                          //     onPressed: () {
-                                          //       // quick retry
-                                          //       loadUserDataAndFetchReferralCode();
-                                          //     },
-                                          //     style: OutlinedButton.styleFrom(
-                                          //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                          //       side: BorderSide(color: Colors.grey.shade300),
-                                          //     ),
-                                          //     child: const Icon(Icons.refresh, size: 20),
-                                          //   ),
-                                          // )
-                                        ],
                                       ),
                                     ],
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Color(0xFF64748B),
+                                    size: 20,
+                                  ),
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    padding: const EdgeInsets.all(8),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+
+                          // Content
+                          Flexible(
+                            child: SingleChildScrollView(
+                              padding: const EdgeInsets.all(24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Benefits Section
+                                  // R
+
+                                  const SizedBox(height: 24),
+
+                                  // Your referral code section
+                                  const Text(
+                                    'Your Referral Code',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF1E293B),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+
+                                  // Code display with loading states
+                                  AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 200),
+                                    child: isLoading
+                                        ? Container(
+                                            key: const ValueKey('loading'),
+                                            padding: const EdgeInsets.all(16),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFF8FAFC),
+                                              borderRadius: BorderRadius.circular(12),
+                                              border: Border.all(color: const Color(0xFFE2E8F0)),
+                                            ),
+                                            child: const Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: 16,
+                                                  height: 16,
+                                                  child: CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                    color: Color(0xFF3B82F6),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 12),
+                                                Text(
+                                                  'Loading...',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Color(0xFF64748B),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : (errorMessage != null)
+                                            ? Container(
+                                                key: const ValueKey('error'),
+                                                padding: const EdgeInsets.all(16),
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xFFFEF2F2),
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  border: Border.all(color: const Color(0xFFFECACA)),
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.error_outline,
+                                                          color: Color(0xFFDC2626),
+                                                          size: 18,
+                                                        ),
+                                                        const SizedBox(width: 8),
+                                                        Expanded(
+                                                          child: Text(
+                                                            errorMessage!,
+                                                            style: const TextStyle(
+                                                              fontSize: 14,
+                                                              color: Color(0xFFDC2626),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(height: 12),
+                                                    SizedBox(
+                                                      width: double.infinity,
+                                                      child: ElevatedButton(
+                                                        onPressed: loadUserDataAndFetchReferralCode,
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: const Color(0xFFDC2626),
+                                                          foregroundColor: Colors.white,
+                                                          padding: const EdgeInsets.symmetric(vertical: 12),
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                          ),
+                                                          elevation: 0,
+                                                        ),
+                                                        child: const Text(
+                                                          'Try Again',
+                                                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : Container(
+                                                key: const ValueKey('code'),
+                                                padding: const EdgeInsets.all(16),
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xFFF8FAFC),
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          const Text(
+                                                            'Code:',
+                                                            style: TextStyle(
+                                                              fontSize: 12,
+                                                              color: Color(0xFF64748B),
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(height: 4),
+                                                          Text(
+                                                            userReferralCode ?? '--',
+                                                            style: const TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight: FontWeight.w600,
+                                                              letterSpacing: 1,
+                                                              color: Color(0xFF1E293B),
+                                                              fontFamily: 'monospace',
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    ElevatedButton.icon(
+                                                      onPressed: () {
+                                                        if (userReferralCode != null && userReferralCode!.isNotEmpty) {
+                                                          Clipboard.setData(ClipboardData(text: userReferralCode!));
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            const SnackBar(
+                                                              content: Text('Code copied to clipboard'),
+                                                              backgroundColor: Color(0xFF059669),
+                                                              behavior: SnackBarBehavior.floating,
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      icon: const Icon(Icons.copy, size: 16),
+                                                      label: const Text('Copy'),
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: const Color(0xFF3B82F6),
+                                                        foregroundColor: Colors.white,
+                                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(8),
+                                                        ),
+                                                        elevation: 0,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                  ),
+
+                                  const SizedBox(height: 24),
+
+                                  // How it works - Simple and clean
+                                  Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF8FAFC),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'How it works',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF1E293B),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        _buildStep('1', 'Share your referral code with friends'),
+                                        _buildStep('2', 'Friend signs up using your code'),
+                                        _buildStep('3', 'Both receive referral benefits'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ),
-        )
+        ),
       );
-      },
-    );
+    },
+  );
+}
 
+Widget _buildStep(String number, String description) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: const Color(0xFF3B82F6),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              number,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            description,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF475569),
+              height: 1.3,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 // helper widget used in the updated UI (kept in-file intentionally)

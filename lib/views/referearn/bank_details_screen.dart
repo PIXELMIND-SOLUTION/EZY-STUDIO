@@ -156,65 +156,65 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
           return Column(
             children: [
               // Gradient header
-              Container(
-                margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF6E62FF), Color(0xFF8A7BFF)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: _radius16,
-                  boxShadow: [
-                    BoxShadow(
-                      color: _primary.withOpacity(0.18),
-                      blurRadius: 16,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 54,
-                      height: 54,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: Colors.white24),
-                      ),
-                      child: const Icon(Icons.account_balance,
-                          color: Colors.white, size: 28),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          AppText(
-                            'add_bank_details',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          AppText(
-                            'secure_bank_info',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                              height: 1.2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              //   padding: const EdgeInsets.all(18),
+              //   decoration: BoxDecoration(
+              //     gradient: const LinearGradient(
+              //       colors: [Color(0xFF6E62FF), Color(0xFF8A7BFF)],
+              //       begin: Alignment.topLeft,
+              //       end: Alignment.bottomRight,
+              //     ),
+              //     borderRadius: _radius16,
+              //     boxShadow: [
+              //       BoxShadow(
+              //         color: _primary.withOpacity(0.18),
+              //         blurRadius: 16,
+              //         offset: const Offset(0, 8),
+              //       ),
+              //     ],
+              //   ),
+              //   child: Row(
+              //     children: [
+              //       Container(
+              //         width: 54,
+              //         height: 54,
+              //         decoration: BoxDecoration(
+              //           color: Colors.white.withOpacity(0.15),
+              //           borderRadius: BorderRadius.circular(14),
+              //           border: Border.all(color: Colors.white24),
+              //         ),
+              //         child: const Icon(Icons.account_balance,
+              //             color: Colors.white, size: 28),
+              //       ),
+              //       const SizedBox(width: 14),
+              //       Expanded(
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: const [
+              //             AppText(
+              //               'add_bank_details',
+              //               style: TextStyle(
+              //                 color: Colors.white,
+              //                 fontWeight: FontWeight.w700,
+              //                 fontSize: 16,
+              //               ),
+              //             ),
+              //             SizedBox(height: 4),
+              //             AppText(
+              //               'secure_bank_info',
+              //               style: TextStyle(
+              //                 color: Colors.white70,
+              //                 fontSize: 12,
+              //                 height: 1.2,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // Body
               Expanded(
@@ -272,7 +272,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const AppText(
-                                'bank_info',
+                                'Bank Informations',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
@@ -306,7 +306,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
                                 controller: _bankNameController,
                                 decoration: _inputDecoration(
                                   context: context,
-                                  label: 'bank_name',
+                                  label: 'Bank Account Name',
                                   prefix: Icons.account_balance,
                                 ),
                                 validator: (value) {
